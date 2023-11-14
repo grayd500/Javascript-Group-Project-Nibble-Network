@@ -1,0 +1,10 @@
+{{!-- views/partials/recent-recipes: --}}
+<div>
+    <h3>Recent Recipes</h3>
+    <!-- Loop through recent recipes and display them -->
+    {{#each recentRecipes}}
+        <div>
+            <a href="/recipe/{{this.id}}">{{this.title}}</a>
+        </div>
+    {{/each}}
+</div>
