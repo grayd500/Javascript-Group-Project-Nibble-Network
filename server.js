@@ -30,7 +30,9 @@ app.use(session({
   saveUninitialized: false, // Adjust these settings as needed
 }));
 
-// Placeholder for routes
+// Define routes after session middleware
+const homeRoutes = require('./controllers/homeRoutes');
+app.use('/', homeRoutes);
 // app.use(require('./controllers'));
 
 // Sync sequelize models to the database, then start server

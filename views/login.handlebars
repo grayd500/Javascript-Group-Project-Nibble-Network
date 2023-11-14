@@ -1,0 +1,16 @@
+{{!-- views/login.handlebars: --}}
+{{#extend "main"}}
+
+{{> navbar }}
+
+<div>
+    <form action="/login" method="POST">
+        <input type="email" name="email" placeholder="Email">
+        <input type="password" name="password" placeholder="Password">
+        <button type="submit">Login</button>
+    </form>
+    <a href="/registration">Don't have an account? Register here</a>
+</div>
+
+{{/extend}}
+
