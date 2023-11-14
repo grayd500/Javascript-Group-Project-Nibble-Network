@@ -32,7 +32,18 @@ app.use(session({
 
 // Define routes after session middleware
 const homeRoutes = require('./controllers/homeRoutes');
+const loginRoutes = require('./controllers/loginRoutes');
+const registrationRoutes = require('./controllers/registrationRoutes');
+const dashboardRoutes = require('./controllers/dashboardRoutes'); // If you created this file
+const resultsRoutes = require('./controllers/resultsRoutes');
+const recipeRoutes = require('./controllers/recipeRoutes');
+
 app.use('/', homeRoutes);
+app.use('/', loginRoutes);
+app.use('/', registrationRoutes);
+app.use('/', dashboardRoutes);
+app.use('/', resultsRoutes);
+app.use('/', recipeRoutes);
 // app.use(require('./controllers'));
 
 // Sync sequelize models to the database, then start server
