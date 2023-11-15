@@ -6,9 +6,9 @@ const router = express.Router();
 router.get('/dashboard', (req, res) => {
     // Mock data for favoriteRecipes for testing purposes
     const favoriteRecipes = [
-        { id: 1, title: "Spaghetti Carbonara" },
-        { id: 2, title: "Chicken Alfredo" },
-        { id: 3, title: "Caesar Salad" },
+        { id: 421, title: "Cream of Goat Hair"  },
+        { id: 754, title: "Uncooked Wheat Chaff in Lukewarm Water" },
+        { id: 632, title: "Cricket Heads in Squid Ink"},
         // ... more mock recipes
     ];
 
