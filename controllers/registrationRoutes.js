@@ -31,7 +31,8 @@ router.post('/register', async (req, res) => {
             password,
         });
 
-        res.status(201).json({ message: 'User registered successfully', user: newUser });
+        // Redirect to the login page after successful registration
+        res.redirect('/login');
     } catch (error) {
         if (error instanceof Sequelize.ValidationError) {
             console.error('Validation error during registration:', error.errors);
