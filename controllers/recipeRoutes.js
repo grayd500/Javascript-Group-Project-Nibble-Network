@@ -1,6 +1,7 @@
-// controllers/recipeRoutes.js:
+// controllers/recipeRoutes.js
 const express = require('express');
 const router = express.Router();
+const recipeController = require('./recipeController');
 
 router.get('/recipe/:id', (req, res) => {
     // Mock data for a single recipe
@@ -12,5 +13,6 @@ router.get('/recipe/:id', (req, res) => {
     res.render('single-recipe', { recipe });
 });
 
+router.use('/recipes', recipeController);
 module.exports = router;
 
