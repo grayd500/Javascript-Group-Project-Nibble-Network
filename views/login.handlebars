@@ -1,11 +1,14 @@
 {{!-- views/login.handlebars: --}}
 {{> navbar }}
 
-<div>
-    <form action="/login" method="POST">
-        <input type="email" name="email" placeholder="Email">
-        <input type="password" name="password" placeholder="Password">
+<div class="container">
+    <form action="/login" method="POST" class="auth-form">
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
     </form>
-    <a href="/registration">Don't have an account? Register here</a>
+    <p class="register-link">
+        Don't have an account? <a href="/registration">Register here</a>
+    </p>
 </div>
+
