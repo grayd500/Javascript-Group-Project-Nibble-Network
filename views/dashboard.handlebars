@@ -1,22 +1,36 @@
 {{!-- views/dashboard.handlebars: --}}
-{{! This adds the navbar partial }}
 {{> navbar }}
 
-<div class="container">
-    <section class="dashboard-section">
-        <div class="cupboard-column">
-            <h2>My Cupboard</h2>
-            <!-- Cupboard contents will be dynamically loaded here -->
-        </div>
-        <div class="favorites-column">
-            <h2>Favorite Recipes</h2>
-            {{#each favoriteRecipes}}
-                <a href="/recipe/{{this.id}}">{{this.title}}</a><br>
-            {{/each}}
-            <!-- Favorite recipes will be dynamically loaded here -->
-        </div>
-    </section>
+<!-- Dashboard Columns -->
+<div class="dashboard-clearfix">
+    <!-- My Cupboard Column -->
+    <div class="cupboard-column">
+        <h2>My Cupboard</h2>
+        <form id="addIngredientForm">
+            <input type="text" id="newIngredient" placeholder="Add new ingredient" />
+            <button type="submit">Add</button>
+        </form>
+        <ul id="ingredientList">
+            <!-- Ingredients will be dynamically loaded here -->
+        </ul>
+    </div>
+
+    <!-- Favorite Recipes Column -->
+    <div class="favorites-column">
+        <h2>Favorite Recipes</h2>
+        {{#each favoriteRecipes}}
+            <div class="recipe-item">
+                <a href="/recipe/{{this.id}}">{{this.title}}</a>
+                <span class="delete-icon" onclick="deleteRecipe({{this.id}})">🗑️</span>
+            </div>
+        {{/each}}
+    </div>
 </div>
 
-
-
+<script>
+    // JavaScript for delete functionality
+    function deleteRecipe(recipeId) {
+        console.log("Delete recipe with ID:", recipeId);
+        // Implementation of deletion logic goes here
+    }
+</script>

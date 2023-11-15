@@ -1,8 +1,8 @@
 {{!-- views/registration.handlebars: --}}
 {{> navbar }}
 
-<div>
-    <form action="/register" method="POST">
+<div class="container">
+    <form class="auth-form" action="/register" method="POST">
         <input type="text" name="username" placeholder="Username">
         <input type="email" name="email" placeholder="Email">
         <input type="password" name="password" placeholder="Password">
@@ -10,3 +10,5 @@
     </form>
     <a href="/login">Already have an account? Login here</a>
 </div>
+
+
