@@ -10,6 +10,6 @@ const Recipe = sequelize.define('Recipe', {
   },
 });
 
-Recipe.belongsToMany(Ingredient, { through: 'RecipeIngredient' });
+
 
 module.exports = Recipe;
