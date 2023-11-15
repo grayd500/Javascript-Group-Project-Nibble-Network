@@ -1,15 +1,17 @@
 {{! views/hompepage.handlebars: }}
-{{! Include the navbar partial }}
 {{> navbar }}
 
-<div class="container">
+<div class="container mt-4">
     <h1>Welcome to Nibble Network</h1>
     <h2>Recent Recipes</h2>
-    {{#each recentRecipes}}
-        <div>
-            <a href="/recipe/{{this.id}}">{{this.title}}</a>
-        </div>
-    {{/each}}
-    <!-- Additional homepage content can go here -->
+    <div>
+        {{#each recentRecipes}}
+            <div class="mb-2">
+                <a href="/recipe/{{this.id}}" class="text-decoration-none">{{this.title}}</a>
+            </div>
+        {{/each}}
+    </div>
 </div>
+
+
 
