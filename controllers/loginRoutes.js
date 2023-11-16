@@ -27,7 +27,7 @@ router.post('/login', async (req, res) => {
 
         if (user && user.checkPassword(password)) {
             req.session.user = user; // Set a session variable
-            res.redirect('/'); // Redirect to the homepage
+            res.redirect('/'); // RedirectS to the homepage
         } else {
             res.render('login', { error: 'Invalid credentials' });
         }
