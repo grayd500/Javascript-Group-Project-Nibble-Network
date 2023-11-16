@@ -11,6 +11,9 @@ const PORT = process.env.PORT || 3000;
 // Import teh 'ingredientsSearch.js router
 const apiRouter = require('./controllers/api/ingredientsSearch');
 
+// Import the 'ingredientsSearch.js' module
+const { getRandomRecipes } = require('./controllers/api/homepageRecipes');
+
 // Setup Handlebars
 app.engine('handlebars', engine({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
@@ -44,6 +47,23 @@ const recipeRoutes = require('./controllers/recipeRoutes');
 
 // Mount the 'apiRouter' at teh '/api' endpoint
 app.use('/api', apiRouter); // Sets up the api search
+
+// Define a route for the homepage
+app.use('/', async (req, res) => {
+  try {
+    // Fetch two random recipes
+    const recipes = await getRandomRecipes();
+
+    // Fetch two random recipes
+    res.render = await getRandomRecipes();
+
+    // Render your homepage and pass the recipes data to your template engine
+    res.render('home', { recipes });
+  } catch (error) {
+    console.error('Error rendering homepage:', error);
+    res.status(500).send('Error rendering homepage');
+  }
+});
 
 app.use('/', homeRoutes);
 app.use('/', loginRoutes);
