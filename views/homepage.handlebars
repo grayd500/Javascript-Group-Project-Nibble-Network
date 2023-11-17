@@ -3,12 +3,14 @@
 
 <div class="container mt-4">
     <h1>Welcome to Nibble Network</h1>
-    <h2>Recent Recipes</h2>
+    <h2>Random Recipes</h2>
     <div>
-        {{#each recentRecipes}}
+        {{#each recipes}}
             <div class="mb-2">
-                <a href="/recipe/{{this.id}}" class="text-decoration-none">{{this.title}}</a>
+                <img src="{{this.image}}" alt="">
+                <p></p><a href="{{this.sourceUrl}}" class="text-decoration-none">{{this.title}}</a></p>
             </div>
+            
         {{/each}}
     </div>
 </div>

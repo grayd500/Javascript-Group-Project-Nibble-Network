@@ -11,6 +11,9 @@ const PORT = process.env.PORT || 3000;
 // Import teh 'ingredientsSearch.js router
 const apiRouter = require('./controllers/api/ingredientsSearch');
 
+// Import the 'ingredientsSearch.js' module
+const { getRandomRecipes } = require('./controllers/api/homepageRecipes');
+
 // Setup Handlebars
 app.engine('handlebars', engine({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
