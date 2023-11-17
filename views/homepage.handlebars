@@ -7,9 +7,8 @@
     <div>
         {{#each recipes}}
             <div class="mb-2">
-                <p>{{this.title}}</p>
                 <img src="{{this.image}}" alt="">
-                <p></p><a href="/recipe/{{this.id}}" class="text-decoration-none">{{this.sourceUrl}}</a></p>
+                <p></p><a href="{{this.sourceUrl}}" class="text-decoration-none">{{this.title}}</a></p>
             </div>
             
         {{/each}}
