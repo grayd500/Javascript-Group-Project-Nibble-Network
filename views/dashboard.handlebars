@@ -1,4 +1,3 @@
-{{!-- views/dashboard.handlebars: --}}
 {{> navbar }}
 
 <div class="container-fluid mt-4">
@@ -13,7 +12,7 @@
                     <button type="submit" class="btn btn-primary">Add</button>
                 </form>
                 <ul id="ingredientList" class="list-group">
-                    <!-- Ingredients will be dynamically loaded here -->
+                    <!-- Ingredients with checkboxes will be dynamically loaded here -->
                 </ul>
             </div>
         </div>
@@ -40,17 +39,19 @@
     </div>
 </div>
 
+<!-- Hidden field to store comma-separated ingredients -->
+<input type="hidden" id="selectedIngredients" name="selectedIngredients">
+
 <script>
     // Existing JavaScript for delete functionality
     // ...
 
-    // JavaScript for adding ingredients to local storage
     document.getElementById('addIngredientForm').addEventListener('submit', function(event) {
         event.preventDefault();
         const ingredient = document.getElementById('newIngredient').value;
         if (ingredient) {
             addIngredientToLocal(ingredient);
-            document.getElementById('newIngredient').value = ''; // Clear the input field
+            document.getElementById('newIngredient').value = '';
             updateIngredientListDisplay();
         }
     });
@@ -65,16 +66,47 @@
         const ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
         const ingredientListElement = document.getElementById('ingredientList');
         ingredientListElement.innerHTML = '';
-        ingredients.forEach(ingredient => {
+        ingredients.forEach((ingredient, index) => {
             const li = document.createElement('li');
-            li.textContent = ingredient;
             li.classList.add('list-group-item');
+            li.innerHTML = `
+                <input type="checkbox" id="ingredient-${index}" class="ingredient-checkbox" data-ingredient="${ingredient}">
+                <label for="ingredient-${index}">${ingredient}</label>
+            `;
             ingredientListElement.appendChild(li);
         });
+    }
+
+    document.getElementById('ingredientList').addEventListener('change', function(event) {
+        if(event.target.classList.contains('ingredient-checkbox')) {
+            updateSelectedIngredients();
+        }
+    });
+
+    function updateSelectedIngredients() {
+        const selectedIngredients = [];
+        document.querySelectorAll('.ingredient-checkbox:checked').forEach(checkbox => {
+            selectedIngredients.push(checkbox.getAttribute('data-ingredient'));
+        });
+        document.getElementById('selectedIngredients').value = selectedIngredients.join(',');
+    }
+
+    function searchRecipes() {
+        const selectedIngredients = document.getElementById('selectedIngredients').value;
+        fetch('/api/find-recipes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ selectedIngredients })
+        })
+        .then(response => response.json())
+        .then(recipes => {
+            // handle the response, update the UI with recipes
+        })
+        .catch(error => console.error('Error:', error));
     }
 
     // Call this function to display ingredients when the page loads
     updateIngredientListDisplay();
 </script>
-
-
