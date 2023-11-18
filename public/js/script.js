@@ -23,17 +23,40 @@ function updateIngredientListDisplay() {
   const ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
   const ingredientListElement = document.getElementById('ingredientList');
   ingredientListElement.innerHTML = '';
-  ingredients.forEach((ingredient) => {
+  ingredients.forEach((ingredient, index) => {
     const li = document.createElement('li');
-    li.classList.add('list-group-item');
-    li.innerHTML = `<span class="clickable-ingredient" data-ingredient="${ingredient}">${ingredient}</span>`;
-    li.addEventListener('click', () =>
-      addIngredientToFirstEmptyBox(ingredient)
+    li.classList.add(
+      'list-group-item',
+      'd-flex',
+      'justify-content-between',
+      'align-items-center'
     );
+    li.innerHTML = `<button class="btn btn-danger btn-sm delete-ingredient ml-1" data-index="${index}">Delete</button>
+      <span class="clickable-ingredient" data-ingredient="${ingredient}">${ingredient}</span>
+      <button class="btn btn-success btn-sm add-ingredient mr-1" data-ingredient="${ingredient}">Add</button>`;
     ingredientListElement.appendChild(li);
+  });
+
+  // Attach event listeners to add and delete buttons
+  document.querySelectorAll('.delete-ingredient').forEach((button) => {
+    button.addEventListener('click', function (event) {
+      deleteIngredient(event.target.dataset.index);
+    });
+  });
+
+  document.querySelectorAll('.add-ingredient').forEach((button) => {
+    button.addEventListener('click', function (event) {
+      addIngredientToFirstEmptyBox(event.target.dataset.ingredient);
+    });
   });
 }
 
+function deleteIngredient(index) {
+  let ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+  ingredients.splice(index, 1); // Remove the ingredient at the specified index
+  localStorage.setItem('ingredients', JSON.stringify(ingredients));
+  updateIngredientListDisplay(); // Update the display
+}
 // Adds ingredient to the first empty box and creates new boxes as needed
 function addIngredientToFirstEmptyBox(ingredient) {
   let added = false;
@@ -113,15 +136,34 @@ function displaySearchResults(recipes) {
   const resultsContainer = document.getElementById('searchResults');
   resultsContainer.innerHTML = '';
   recipes.forEach((recipe) => {
+    console.log('Recipe data:', recipe);
     const recipeElement = document.createElement('div');
     recipeElement.className = 'recipe-item';
     recipeElement.innerHTML = `
-          <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image">
-          <a href="${recipe.sourceUrl}" target="_blank">${recipe.title}</a>
-      `;
+    <div class="recipe-details">
+        <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image">
+        <div class="recipe-info">
+        <a href="" target="_blank" class="recipe-title">${recipe.title}</a>
+            <p>Used Ingredients: ${recipe.usedIngredientCount}</p>
+            <p>Missed Ingredients: ${recipe.missedIngredientCount}</p>
+            <button onclick="fetchRecipeDetails(${recipe.id})" class="btn btn-info">Details</button>
+        </div>
+    </div>`;
     resultsContainer.appendChild(recipeElement);
   });
 }
 
+function fetchRecipeDetails(recipeId) {
+  fetch(`/api/recipe-details/${recipeId}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.url) {
+        window.open(data.url, '_blank');
+      } else {
+        console.error('URL not found');
+      }
+    })
+    .catch((error) => console.error('Error fetching recipe details:', error));
+}
 // Initialize saved ingredients on page load
 updateIngredientListDisplay();
