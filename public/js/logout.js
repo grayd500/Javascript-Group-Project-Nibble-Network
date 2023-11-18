@@ -8,15 +8,15 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
         })
-        .then(response => {
-            if (response.ok) {
-                location.href = '/login';
-            } else {
-                alert('Logout failed');
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+            .then(response => {
+                if (response.ok) {
+                    location.href = '/login';
+                } else {
+                    alert('Logout failed');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
     });
 });

@@ -48,6 +48,12 @@ app.use(express.static('public'));
 app.use(
   session({
     secret: 'Super secret secret',
+    cookie: {
+      maxAge: 300000,
+      httpOnly: true,
+      secure: false,
+      sameSite: 'strict',
+    },
     store: new SequelizeStore({
       db: sequelize,
       checkExpirationInterval: 15 * 60 * 1000,
@@ -65,7 +71,9 @@ const registrationRoutes = require('./controllers/registrationRoutes');
 const dashboardRoutes = require('./controllers/dashboardRoutes');
 const resultsRoutes = require('./controllers/resultsRoutes');
 const recipeRoutes = require('./controllers/recipeRoutes');
+const logoutRoutes = require('./controllers/logoutRoutes');
 const ingredientController = require('./controllers/ingredientController');
+
 
 // Mount other routers
 app.use('/', homeRoutes);
@@ -74,6 +82,7 @@ app.use('/', registrationRoutes);
 app.use('/', dashboardRoutes);
 app.use('/', resultsRoutes);
 app.use('/', recipeRoutes);
+app.use('/', logoutRoutes);
 app.use('/api', ingredientController);
 
 sequelize.sync({ force: false }).then(() => {
