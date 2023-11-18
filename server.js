@@ -65,7 +65,9 @@ const registrationRoutes = require('./controllers/registrationRoutes');
 const dashboardRoutes = require('./controllers/dashboardRoutes');
 const resultsRoutes = require('./controllers/resultsRoutes');
 const recipeRoutes = require('./controllers/recipeRoutes');
+const logoutRoutes = require('./controllers/logoutRoutes');
 const ingredientController = require('./controllers/ingredientController');
+
 
 // Mount other routers
 app.use('/', homeRoutes);
@@ -74,6 +76,7 @@ app.use('/', registrationRoutes);
 app.use('/', dashboardRoutes);
 app.use('/', resultsRoutes);
 app.use('/', recipeRoutes);
+app.use('/', logoutRoutes);
 app.use('/api', ingredientController);
 
 sequelize.sync({ force: false }).then(() => {
