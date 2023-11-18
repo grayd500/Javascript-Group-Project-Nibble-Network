@@ -23,4 +23,4 @@ async function getRandomRecipes() {
   }
 }
 
-module.exports = { getRandomRecipes };
+module.exports = getRandomRecipes;

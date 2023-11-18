@@ -1,7 +1,7 @@
 // controllers/homeRoutes.js:
 const express = require('express');
 const router = express.Router();
-const { getRandomRecipes } = require('../controllers/api/homepageRecipes');
+const getRandomRecipes = require('../controllers/api/homepageRecipes');
 
 // Define a route for the homepage
 router.get('/', async (req, res) => {
