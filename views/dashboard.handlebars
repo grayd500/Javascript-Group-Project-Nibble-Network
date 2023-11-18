@@ -1,112 +1,58 @@
 {{> navbar }}
-
-<div class="container-fluid mt-4">
-    <div class="row">
-
-        <!-- First (Left) Container -->
-        <div class="col-md-4">
-            <div class="floating-effect">
-                <h2>My Cupboard</h2>
-                <form id="addIngredientForm" class="form-inline mb-3">
-                    <input type="text" id="newIngredient" class="form-control mr-2" placeholder="Add new ingredient" />
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </form>
-                <ul id="ingredientList" class="list-group">
-                    <!-- Ingredients with checkboxes will be dynamically loaded here -->
-                </ul>
+<body>
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Left Container for Saved Ingredients -->
+            <div class="col-md-2">
+                <div class="floating-effect">
+                    <h2>My Cupboard</h2>
+                    <form id="addIngredientForm" class="form-inline mb-3">
+                        <input type="text" id="newIngredient" class="form-control mr-2" placeholder="Add new ingredient" />
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+                    <ul id="ingredientList" class="list-group">
+                        <!-- Ingredients will be dynamically loaded here -->
+                    </ul>
+                </div>
             </div>
-        </div>
 
-        <!-- Middle (Invisible) Container -->
-        <div class="col-md-4 d-flex justify-content-center align-items-end" style="height: 100%;">
-            <!-- Button at the bottom -->
-            <button id="searchRecipesButton" type="button" class="btn btn-primary mb-3" onclick="searchRecipes()">Search Recipes</button>
-        </div>
+            <!-- Middle Container for Ingredient Input Boxes -->
+            <div class="col-md-8">
+                <form id="ingredientForm">
+                    <input type="text" id="ingredient1" placeholder="Ingredient 1" class="form-control mb-2 ingredient-input">
+                    <!-- Manually created additional ingredient input boxes, initially hidden -->
+                    <input type="text" id="ingredient2" placeholder="Ingredient 2" class="form-control mb-2 ingredient-input" style="display: none;">
+                    <input type="text" id="ingredient3" placeholder="Ingredient 3" class="form-control mb-2 ingredient-input" style="display: none;">
+                    <input type="text" id="ingredient4" placeholder="Ingredient 4" class="form-control mb-2 ingredient-input" style="display: none;">
+                    <input type="text" id="ingredient5" placeholder="Ingredient 5" class="form-control mb-2 ingredient-input" style="display: none;">
+                    <input type="text" id="ingredient6" placeholder="Ingredient 6" class="form-control mb-2 ingredient-input" style="display: none;">
+                    <input type="text" id="ingredient7" placeholder="Ingredient 7" class="form-control mb-2 ingredient-input" style="display: none;">
+                    <input type="text" id="ingredient8" placeholder="Ingredient 8" class="form-control mb-2 ingredient-input" style="display: none;">
+                    <input type="text" id="ingredient9" placeholder="Ingredient 9" class="form-control mb-2 ingredient-input" style="display: none;">
+                    <input type="text" id="ingredient10" placeholder="Ingredient 10" class="form-control mb-2 ingredient-input" style="display: none;">
+                    <div class="buttons">
+                        <button type="submit" class="btn btn-primary">Search Recipes</button>
+                        <button type="button" id="resetIngredientsButton" class="btn btn-secondary ml-2">Reset</button>
+                    </div>
+                </form>
+                <div id="searchResults" class="search-results mt-3">
+                    <!-- Search results will be dynamically loaded here -->
+                </div>
+            </div>
 
-        <!-- Third (Right) Container -->
-        <div class="col-md-4">
-            <div class="floating-effect">
-                <h2>Favorite Recipes</h2>
-                {{#each favoriteRecipes}}
+            <!-- Right Container for Favorite Recipes -->
+            <div class="col-md-2">
+                <div class="floating-effect">
+                    <h2>Favorite Recipes</h2>
+                    {{#each recipes}}
                     <div class="recipe-item mb-2">
-                        <a href="/recipe/{{this.id}}" class="text-decoration-none">{{this.title}}</a>
+                        <a href="/recipe/{{this.image}}" class="text-decoration-none">{{this.title}}</a>
                         <span class="delete-icon" onclick="deleteRecipe({{this.id}})">🗑️</span>
                     </div>
-                {{/each}}
+                    {{/each}}
+                </div>
             </div>
         </div>
-
     </div>
-</div>
-
-<!-- Hidden field to store comma-separated ingredients -->
-<input type="hidden" id="selectedIngredients" name="selectedIngredients">
-
-<script>
-    // Existing JavaScript for delete functionality
-    // ...
-
-    document.getElementById('addIngredientForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const ingredient = document.getElementById('newIngredient').value;
-        if (ingredient) {
-            addIngredientToLocal(ingredient);
-            document.getElementById('newIngredient').value = '';
-            updateIngredientListDisplay();
-        }
-    });
-
-    function addIngredientToLocal(ingredient) {
-        let ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
-        ingredients.push(ingredient);
-        localStorage.setItem('ingredients', JSON.stringify(ingredients));
-    }
-
-    function updateIngredientListDisplay() {
-        const ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
-        const ingredientListElement = document.getElementById('ingredientList');
-        ingredientListElement.innerHTML = '';
-        ingredients.forEach((ingredient, index) => {
-            const li = document.createElement('li');
-            li.classList.add('list-group-item');
-            li.innerHTML = `
-                <input type="checkbox" id="ingredient-${index}" class="ingredient-checkbox" data-ingredient="${ingredient}">
-                <label for="ingredient-${index}">${ingredient}</label>
-            `;
-            ingredientListElement.appendChild(li);
-        });
-    }
-
-    document.getElementById('ingredientList').addEventListener('change', function(event) {
-        if(event.target.classList.contains('ingredient-checkbox')) {
-            updateSelectedIngredients();
-        }
-    });
-
-    function updateSelectedIngredients() {
-        const selectedIngredients = [];
-        document.querySelectorAll('.ingredient-checkbox:checked').forEach(checkbox => {
-            selectedIngredients.push(checkbox.getAttribute('data-ingredient'));
-        });
-        document.getElementById('selectedIngredients').value = selectedIngredients.join(',');
-    }
-
-    function searchRecipes() {
-        const selectedIngredients = document.getElementById('selectedIngredients').value;
-        fetch('/api/find-recipes', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ selectedIngredients })
-        })
-        .then(response => response.json())
-        .then(recipes => {
-            // handle the response, update the UI with recipes
-        })
-        .catch(error => console.error('Error:', error));
-    }
-
-    // Call this function to display ingredients when the page loads
-    updateIngredientListDisplay();
-</script>
+    <script src="/js/script.js"></script>
+</body>

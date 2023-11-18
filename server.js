@@ -8,15 +8,36 @@ const sequelize = require('./config/connection');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Import teh 'ingredientsSearch.js router
-const apiRouter = require('./controllers/api/ingredientsSearch');
+// Range helper function
+const range = (start, end) =>
+  Array.from({ length: end - start + 1 }, (_, i) => i + start);
+
+// Import and use the ingredientsSearch router
+const ingredientsSearchRouter = require('./controllers/api/ingredientsSearch');
+app.use('/api', ingredientsSearchRouter);
 
 // Import the 'ingredientsSearch.js' module
 const { getRandomRecipes } = require('./controllers/api/homepageRecipes');
 
 // Setup Handlebars
-app.engine('handlebars', engine({ defaultLayout: 'main' }));
+app.engine(
+  'handlebars',
+  engine({
+    helpers: {
+      range, // Register the range helper
+    },
+    defaultLayout: 'main',
+  })
+);
 app.set('view engine', 'handlebars');
+
+// Middleware for logging requests
+app.use((req, res, next) => {
+  console.log('Request Type:', req.method);
+  console.log('Request URL:', req.originalUrl);
+  console.log('Request Body:', req.body);
+  next();
+});
 
 // Middleware
 app.use(express.json());
@@ -46,15 +67,14 @@ const resultsRoutes = require('./controllers/resultsRoutes');
 const recipeRoutes = require('./controllers/recipeRoutes');
 const ingredientController = require('./controllers/ingredientController');
 
-// Mount the 'apiRouter' at teh '/api' endpoint
-app.use('/api', apiRouter); // Sets up the api search
-app.use('/api', ingredientController);
+// Mount other routers
 app.use('/', homeRoutes);
 app.use('/', loginRoutes);
 app.use('/', registrationRoutes);
 app.use('/', dashboardRoutes);
 app.use('/', resultsRoutes);
 app.use('/', recipeRoutes);
+app.use('/api', ingredientController);
 
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
