@@ -1,3 +1,4 @@
+-- db/schema.sql:
 -- Drop the database if it exists
 DROP DATABASE IF EXISTS nibble_network_db;
 

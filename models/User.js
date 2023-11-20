@@ -1,3 +1,4 @@
+// models/User.js:
 const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcryptjs');
 const sequelize = require('../config/connection');
@@ -46,6 +47,7 @@ User.init(
         hooks: {
             async beforeCreate(userData) {
                 userData.password = await bcrypt.hash(userData.password, 10);
+                return userData;
             },
             async beforeUpdate(userData) {
                 if (userData.changed('password')) {
