@@ -71,6 +71,7 @@ const resultsRoutes = require('./controllers/resultsRoutes');
 const recipeRoutes = require('./controllers/recipeRoutes');
 const logoutRoutes = require('./controllers/logoutRoutes');
 const ingredientController = require('./controllers/ingredientController');
+const ingredientsSearchRoutes = require('./controllers/api/ingredientsSearch');
 
 // Mount routers
 app.use('/', homeRoutes);
@@ -81,6 +82,8 @@ app.use('/', resultsRoutes);
 app.use('/', recipeRoutes);
 app.use('/', logoutRoutes);
 app.use('/api', ingredientController);
+app.use('/api', ingredientsSearchRoutes);
+
 
 // Database synchronization and server start
 sequelize.sync({ force: false }).then(() => {
