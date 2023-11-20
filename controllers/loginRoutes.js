@@ -1,40 +1,21 @@
-// const express = require('express');
-// const router = express.Router();
-
-// router.get('/login', (req, res) => {
-//     res.render('login');
-// });
-
-// module.exports = router;
-
+// controllers/loginRoutes.js:
 const express = require('express');
+const passport = require('passport'); // Include passport
 const router = express.Router();
 const { User } = require('../models');
 
 router.get('/login', (req, res) => {
     if (req.session.user) {
-        return res.redirect('/');
+        return res.redirect('/dashboard'); // Redirect to dashboard if already logged in
     }
 
     res.render('login');
 });
 
-router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-
-    try {
-        const user = await User.findOne({ where: { email: email } });
-
-        if (user && user.checkPassword(password)) {
-            req.session.user = user; // Set a session variable
-            res.redirect('/'); // RedirectS to the homepage
-        } else {
-            res.render('login', { error: 'Invalid credentials' });
-        }
-    } catch (error) {
-        console.error(error);
-        res.render('login', { error: 'An error occurred' });
-    }
-});
+router.post('/login', passport.authenticate('local', {
+    successRedirect: '/dashboard', // Redirect to the dashboard upon successful login
+    failureRedirect: '/login', // Redirect back to login page on failure
+    failureFlash: true // Optional, for displaying flash messages
+}));
 
 module.exports = router;
