@@ -38,27 +38,21 @@ h1, h2, h3 {
 }
 
 /* Dashboard Section */
-/* Adjust or remove these styles based on Bootstrap's grid system */
 .dashboard-section {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    flex-wrap: nowrap;
+    flex-wrap: wrap; /* Add wrap to allow content to stack on smaller screens */
 }
 
 /* Additional Styles */
 
-.cupboard-column, .favorites-column {
-    background-color: rgba(255, 255, 255, 0.25); /* Transparent floating container style */
-    border-radius: 5px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+.cupboard-column, .favorites-column, .middle-column {
+    flex: 1; /* Each column takes equal space */
+    padding: 15px; /* Add some padding */
+    min-width: 250px; /* Minimum width for each column */
     /* Add other styles as needed */
 }
-
-.middle-column {
-    /* Invisible for now, can add styles later */
-}
-
 
 /* Recipe Items */
 .recipe-item, #addIngredientForm {
@@ -184,8 +178,19 @@ h1, h2, h3 {
 }
 
 @media (max-width: 768px) {
+    .dashboard-section {
+        flex-direction: column; /* Stack columns vertically on smaller screens */
+    }
+
+    .cupboard-column, .favorites-column, .middle-column {
+        min-width: 100%; /* Full width on smaller screens */
+        max-width: 100%; /* Prevents exceeding the container width */
+    }
+
+    /* Update form-inline for smaller screens */
     .form-inline {
-        flex-direction: column; /* Stack elements vertically on smaller screens */
+        flex-direction: column;
+        align-items: stretch;
     }
 
     .btn {
