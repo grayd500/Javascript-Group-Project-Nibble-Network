@@ -1,18 +1,29 @@
-// models/Recipe.js:
-const { DataTypes } = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
+const User = require('./User');
 
-const Recipe = sequelize.define(
-  'recipe',
+class Recipe extends Model {}
+
+Recipe.init(
   {
-    // Define your Recipe model attributes here
-    // For example:
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    // Your existing recipe fields
+    title: DataTypes.STRING,
+    ingredients: DataTypes.TEXT,
+    instructions: DataTypes.TEXT,
+    // Foreign key referencing User model
+    userId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: User,
+        key: 'id',
+      },
     },
   },
-  { modelName: 'recipe' }
+  {
+    sequelize,
+    modelName: 'recipe',
+    // Other option as needed
+  }
 );
 
 module.exports = Recipe;

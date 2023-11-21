@@ -147,6 +147,7 @@ function displaySearchResults(recipes) {
             <p>Used Ingredients: ${recipe.usedIngredientCount}</p>
             <p>Missed Ingredients: ${recipe.missedIngredientCount}</p>
             <button onclick="fetchRecipeDetails(${recipe.id})" class="btn btn-info">Details</button>
+            <button onclick="saveRecipe(${recipe.id})" class="btn btn-success">Save Recipe</button>
         </div>
     </div>`;
     resultsContainer.appendChild(recipeElement);
